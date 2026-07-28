@@ -37,7 +37,7 @@ Eyu 是一个使用 **C++20** 实现的轻量级脚本语言项目，目标是�
 项目重点关注编译器前端、运行时系统、内存管理与工程化架构，并将逐步实现函数、闭包、对象模型、垃圾回收、错误诊断和字节码优化等核心能力。
 
 > [!NOTE]
-> Eyu 仍处于早期学习与搭建阶段，语法、目录结构和实现方案都可能随着学习进度调整。
+> Eyu 仍处于早期开发阶段，语法和实现方案都可能随着开发进度调整。当前已完成 C++20 基础工程搭建。
 
 - [🎯 项目目标](#项目目标)
 - [🧠 实现路线](#实现路线)
@@ -86,22 +86,22 @@ Scanner ──► Tokens ──► Parser / Compiler ──► Bytecode
 ## 仓库结构
 
 > [!NOTE]
-> 以下是预计的仓库结构。当前项目正处于初始阶段，最终布局以实际源码树和根目录 `CMakeLists.txt` 为准。
+> 当前先落地最小可构建骨架，各模块会随着开发进度逐步增加具体实现。
 
 ```text
 Eyu/
-├── cmake/                    # CMake 模块与工具链配置
+├── app/                      # CLI 与 REPL 入口
+├── cmake/                    # CMake 辅助模块
 ├── docs/                     # 语言规范、设计文档与图片
-├── include/eyu/              # 对外头文件
 ├── src/
 │   ├── frontend/             # Token、扫描器、解析器与语义分析
-│   ├── compiler/             # 字节码编译器与指令块
-│   ├── runtime/              # 值、对象、内存管理与标准库
-│   ├── vm/                   # 字节码虚拟机
-│   └── main.cpp              # CLI 与 REPL 入口
-├── tests/                    # 单元测试与语言行为测试
-├── examples/                 # Eyu 示例程序
+│   ├── bytecode/             # Opcode、指令块、常量表与反汇编
+│   ├── compiler/             # 字节码编译器
+│   ├── runtime/              # 值、对象、原生函数与内存管理
+│   └── vm/                   # 指令循环、操作数栈与调用帧
+├── tests/                    # 单元测试、集成测试与语言行为测试
 ├── CMakeLists.txt
+├── CMakePresets.json
 └── README.md
 ```
 
@@ -124,22 +124,25 @@ git clone https://github.com/michaelchern/Eyu.git
 cd Eyu
 ```
 
-### 计划中的构建方式
+### 配置、构建与测试
 
 ```bash
-cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug
-cmake --build build
-./build/eyu
+cmake --preset debug
+cmake --build --preset debug
+ctest --preset debug
 ```
 
-进入 REPL 后可以直接输入 Eyu 代码；后续也将支持从文件执行：
+构建后可以运行当前的 CLI 骨架：
 
 ```bash
-./build/eyu examples/hello.eyu
+./out/build/debug/bin/eyu --help
+./out/build/debug/bin/eyu --version
 ```
+
+Release 构建可将上述 `debug` 替换为 `release`。Windows 上的可执行文件名为 `eyu.exe`。
 
 > [!IMPORTANT]
-> 当前仓库尚未接入完整的 CMake 工程与可执行目标，上述命令是预期使用方式，暂时无法运行。
+> 当前可执行程序只提供基础的帮助和版本信息，语言解析、REPL 与脚本执行尚未实现。
 
 ## 开发进度
 
@@ -147,7 +150,7 @@ cmake --build build
 
 | 阶段 | 内容 | 状态 | 测试 | 笔记 |
 | :---: | --- | :---: | :---: | :---: |
-| 00 | 项目规划与基础工程 | 🚧 | ⬜ | 🚧 |
+| 00 | 项目规划与基础工程 | ✅ | ✅ | 🚧 |
 | 01 | 词法分析与 Token | ⬜ | ⬜ | ⬜ |
 | 02 | 表达式与语法分析 | ⬜ | ⬜ | ⬜ |
 | 03 | AST 与树遍历解释器 | ⬜ | ⬜ | ⬜ |
