@@ -1,0 +1,4 @@
+interface:
+  display_name: "Eyu Workflow"
+  short_description: "Guide AI work and project knowledge in Eyu"
+  default_prompt: "Use $eyu-workflow to handle this Eyu repository task safely and verify the result."
