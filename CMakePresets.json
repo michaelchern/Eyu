@@ -1,5 +1,5 @@
 {
-  "version": 6,
+  "version": 8,
   "cmakeMinimumRequired": {
     "major": 3,
     "minor": 28,
@@ -9,17 +9,33 @@
     {
       "name": "base",
       "hidden": true,
-      "generator": "Ninja",
-      "binaryDir": "${sourceDir}/out/build/${presetName}",
       "cacheVariables": {
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
         "EYU_BUILD_TESTS": "ON"
       }
     },
     {
+      "name": "ninja-single-config",
+      "hidden": true,
+      "inherits": "base",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/out/build/${presetName}"
+    },
+    {
+      "name": "ninja-multi-config",
+      "hidden": true,
+      "inherits": "base",
+      "generator": "Ninja Multi-Config",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_CONFIGURATION_TYPES": "Debug;Release;RelWithDebInfo;MinSizeRel"
+      }
+    },
+    {
       "name": "debug",
       "displayName": "Debug",
-      "inherits": "base",
+      "description": "Portable single-config Debug build with Ninja",
+      "inherits": "ninja-single-config",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
       }
@@ -27,13 +43,83 @@
     {
       "name": "release",
       "displayName": "Release",
-      "inherits": "base",
+      "description": "Portable single-config Release build with Ninja",
+      "inherits": "ninja-single-config",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "ninja-msvc",
+      "displayName": "Windows MSVC (Ninja Multi-Config)",
+      "description": "Requires an MSVC developer environment with cl available",
+      "inherits": "ninja-multi-config",
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "cl"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "ninja-clang",
+      "displayName": "Windows Clang (Ninja Multi-Config)",
+      "description": "Requires LLVM clang++ to be available on PATH",
+      "inherits": "ninja-multi-config",
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "clang++"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "ninja-macos",
+      "displayName": "macOS (Ninja Multi-Config)",
+      "description": "Multi-config Ninja build using the default macOS compiler",
+      "inherits": "ninja-multi-config",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
       }
     }
   ],
   "buildPresets": [
+    {
+      "name": "msvc-build-base",
+      "hidden": true,
+      "configurePreset": "ninja-msvc",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "clang-build-base",
+      "hidden": true,
+      "configurePreset": "ninja-clang",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "macos-build-base",
+      "hidden": true,
+      "configurePreset": "ninja-macos",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      }
+    },
     {
       "name": "debug",
       "configurePreset": "debug"
@@ -41,22 +127,202 @@
     {
       "name": "release",
       "configurePreset": "release"
+    },
+    {
+      "name": "msvc-debug",
+      "displayName": "Windows MSVC Debug",
+      "inherits": "msvc-build-base",
+      "configuration": "Debug"
+    },
+    {
+      "name": "msvc-release",
+      "displayName": "Windows MSVC Release",
+      "inherits": "msvc-build-base",
+      "configuration": "Release"
+    },
+    {
+      "name": "msvc-relwithdebinfo",
+      "displayName": "Windows MSVC RelWithDebInfo",
+      "inherits": "msvc-build-base",
+      "configuration": "RelWithDebInfo"
+    },
+    {
+      "name": "msvc-minsizerel",
+      "displayName": "Windows MSVC MinSizeRel",
+      "inherits": "msvc-build-base",
+      "configuration": "MinSizeRel"
+    },
+    {
+      "name": "clang-debug",
+      "displayName": "Windows Clang Debug",
+      "inherits": "clang-build-base",
+      "configuration": "Debug"
+    },
+    {
+      "name": "clang-release",
+      "displayName": "Windows Clang Release",
+      "inherits": "clang-build-base",
+      "configuration": "Release"
+    },
+    {
+      "name": "clang-relwithdebinfo",
+      "displayName": "Windows Clang RelWithDebInfo",
+      "inherits": "clang-build-base",
+      "configuration": "RelWithDebInfo"
+    },
+    {
+      "name": "clang-minsizerel",
+      "displayName": "Windows Clang MinSizeRel",
+      "inherits": "clang-build-base",
+      "configuration": "MinSizeRel"
+    },
+    {
+      "name": "macos-debug",
+      "displayName": "macOS Debug",
+      "inherits": "macos-build-base",
+      "configuration": "Debug"
+    },
+    {
+      "name": "macos-release",
+      "displayName": "macOS Release",
+      "inherits": "macos-build-base",
+      "configuration": "Release"
+    },
+    {
+      "name": "macos-relwithdebinfo",
+      "displayName": "macOS RelWithDebInfo",
+      "inherits": "macos-build-base",
+      "configuration": "RelWithDebInfo"
+    },
+    {
+      "name": "macos-minsizerel",
+      "displayName": "macOS MinSizeRel",
+      "inherits": "macos-build-base",
+      "configuration": "MinSizeRel"
     }
   ],
   "testPresets": [
     {
-      "name": "debug",
-      "configurePreset": "debug",
+      "name": "test-base",
+      "hidden": true,
       "output": {
         "outputOnFailure": true
       }
     },
     {
-      "name": "release",
-      "configurePreset": "release",
-      "output": {
-        "outputOnFailure": true
+      "name": "msvc-test-base",
+      "hidden": true,
+      "inherits": "test-base",
+      "configurePreset": "ninja-msvc",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
       }
+    },
+    {
+      "name": "clang-test-base",
+      "hidden": true,
+      "inherits": "test-base",
+      "configurePreset": "ninja-clang",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "macos-test-base",
+      "hidden": true,
+      "inherits": "test-base",
+      "configurePreset": "ninja-macos",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      }
+    },
+    {
+      "name": "debug",
+      "inherits": "test-base",
+      "configurePreset": "debug"
+    },
+    {
+      "name": "release",
+      "inherits": "test-base",
+      "configurePreset": "release"
+    },
+    {
+      "name": "msvc-debug",
+      "displayName": "Windows MSVC Debug",
+      "inherits": "msvc-test-base",
+      "configuration": "Debug"
+    },
+    {
+      "name": "msvc-release",
+      "displayName": "Windows MSVC Release",
+      "inherits": "msvc-test-base",
+      "configuration": "Release"
+    },
+    {
+      "name": "msvc-relwithdebinfo",
+      "displayName": "Windows MSVC RelWithDebInfo",
+      "inherits": "msvc-test-base",
+      "configuration": "RelWithDebInfo"
+    },
+    {
+      "name": "msvc-minsizerel",
+      "displayName": "Windows MSVC MinSizeRel",
+      "inherits": "msvc-test-base",
+      "configuration": "MinSizeRel"
+    },
+    {
+      "name": "clang-debug",
+      "displayName": "Windows Clang Debug",
+      "inherits": "clang-test-base",
+      "configuration": "Debug"
+    },
+    {
+      "name": "clang-release",
+      "displayName": "Windows Clang Release",
+      "inherits": "clang-test-base",
+      "configuration": "Release"
+    },
+    {
+      "name": "clang-relwithdebinfo",
+      "displayName": "Windows Clang RelWithDebInfo",
+      "inherits": "clang-test-base",
+      "configuration": "RelWithDebInfo"
+    },
+    {
+      "name": "clang-minsizerel",
+      "displayName": "Windows Clang MinSizeRel",
+      "inherits": "clang-test-base",
+      "configuration": "MinSizeRel"
+    },
+    {
+      "name": "macos-debug",
+      "displayName": "macOS Debug",
+      "inherits": "macos-test-base",
+      "configuration": "Debug"
+    },
+    {
+      "name": "macos-release",
+      "displayName": "macOS Release",
+      "inherits": "macos-test-base",
+      "configuration": "Release"
+    },
+    {
+      "name": "macos-relwithdebinfo",
+      "displayName": "macOS RelWithDebInfo",
+      "inherits": "macos-test-base",
+      "configuration": "RelWithDebInfo"
+    },
+    {
+      "name": "macos-minsizerel",
+      "displayName": "macOS MinSizeRel",
+      "inherits": "macos-test-base",
+      "configuration": "MinSizeRel"
     }
   ]
 }

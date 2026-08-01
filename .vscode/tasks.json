@@ -1,0 +1,47 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "cmake",
+      "label": "Eyu: Configure active preset",
+      "command": "configure",
+      "problemMatcher": []
+    },
+    {
+      "type": "cmake",
+      "label": "Eyu: Build active preset",
+      "command": "build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "type": "cmake",
+      "label": "Eyu: Test active preset",
+      "command": "test",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Eyu: Validate active preset",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Eyu: Configure active preset",
+        "Eyu: Build active preset",
+        "Eyu: Test active preset"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "type": "cmake",
+      "label": "Eyu: Clean rebuild active preset",
+      "command": "cleanRebuild",
+      "problemMatcher": []
+    }
+  ]
+}

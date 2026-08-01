@@ -1,70 +1,53 @@
 ---
 name: eyu-workflow
-description: Repository workflow for AI agents working in the Eyu C++20 scripting-language learning project. Use when editing Eyu, handling =sa/=ca/=ai/=br/=gc/=cm/=gh commands, routing to build/Git/learning context, recording language-design evidence, or validating project changes.
+description: Vendor-neutral workflow for the Eyu C++20 scripting-language learning repository. Use when an agent edits Eyu, handles =sa/=ca/=ai/=br/=gc/=cm/=gh, or needs routing to CMake, Git, formatting, codegraph, or learning context.
 ---
-<!-- EYU_WORKFLOW_SKILL_ZH_CN_SHA256: f09458f0c3c2bce87e607e0cd53a3a6fe03989c7571a0f6d96dd65a39a411748 -->
+<!-- EYU_WORKFLOW_SKILL_ZH_CN_SHA256: 1f64d65e7b9c1f39f5e079a16ff0c5f9d9c6530fdbd3343debe067fa5cce1335 -->
 
 # Eyu Workflow
-
-Use this workflow to keep repository work scoped, evidence-based, and recoverable across AI agents.
 
 ## Start
 
 1. Read root `AGENTS.md`.
 2. Inspect `git status --short --branch` before edits.
-3. Load only the relevant file from `docs/agents/`.
-4. Treat live code, CMake, and tests as authoritative; the README roadmap is not implementation evidence.
-5. Keep changes scoped to the user request and report validation results.
+3. Confirm facts from live source, CMake, and tests.
+4. Load only relevant `docs/agents/` context.
+5. Keep scope narrow and report exact validation.
 
-## Command Routing
+## Commands
 
-- `=sa`: synchronize all English agent files from Chinese sources.
-- `=ca`: check whether all English agent files are synchronized.
-- `=ai`: distill stable Eyu context from recent conversations.
-- `=br <purpose>`: create and switch to a conventionally named local branch.
-- `=gc`: check publication readiness without changing Git state.
-- `=cm`: commit intended changes to the current local branch only.
-- `=gh`: commit intended changes and publish a draft PR.
+- `=sa`: synchronize English Agent files and skill metadata from Chinese sources.
+- `=ca`: run only the synchronization check.
+- `=ai`: preserve stable, evidence-backed Eyu context.
+- `=br <purpose>`: create a conventionally named local branch while preserving changes.
+- `=gc`: run a strictly read-only publication preflight.
+- `=cm`: commit only intended files locally.
+- `=gh`: commit, push, and create a GitHub draft PR.
 
-For `=sa` and `=ca`, use `python3 ./tools/sync_agents.py`. On Windows, use `py -3` or a Python 3 `python` command when `python3` is unavailable. The script discovers Chinese-source pairs and checks normalized SHA256 markers, missing targets, orphaned English files, duplicate markers, and untranslated Chinese body text.
+Use `python3 ./tools/sync-agents.py` or the PowerShell counterpart for `=sa/=ca`. Read `docs/agents/git.md` before `=br/=gc/=cm/=gh`.
 
-For `=ai`:
+## Routing
 
-1. Inspect the worktree and preserve user changes.
-2. Search the owning document and older conclusions before writing.
-3. Preserve only settled, reusable content that reduces future misreads, fixes a validation entrypoint, or records an explicit project decision.
-4. Put repository rules in `AGENTS.zh-CN.md`, durable domain context in `docs/agents/zh-CN/*.md`, topic state and evidence in `docs/tasks/zh-CN/*.md`, and shared workflows or commands in `SKILL.zh-CN.md`.
-5. Keep candidate, settled, and implemented language designs distinct. Implemented behavior must point to live code and tests.
-6. Treat versions, target lists, and paths discoverable from live files as live-file data instead of duplicating full inventories.
-7. Do not preserve temporary guesses, undecided syntax debates, one-off logs, raw chat history, or secrets.
-8. Synchronize matching English files and run `python3 ./tools/sync_agents.py --check` after editing Chinese sources.
+- CMake, builds, tests: `docs/agents/build.md`
+- Git and GitHub: `docs/agents/git.md`
+- clang-format and comments: `docs/agents/formatting.md`
+- Symbols and impact: `docs/agents/codegraph.md`
+- Learning, language design, sources: `docs/agents/learning.md`
 
-For `=br`, `=gc`, `=cm`, and `=gh`, also read `docs/agents/git.md`.
+## Delivery Contract
 
-## Context Routing
+- Use `<type>/<english-kebab-description>` branches.
+- Use `<type>(<scope>)!: <Chinese description>` commit and PR subjects.
+- Normal commit bodies are optional; breaking changes, WIP, or material risk require a body.
+- Never default to `git add .`, publish `chore(wip)`, or push directly to `main`.
+- `=gh` runs policy checks, completes the template, creates a draft PR, and waits for `quality-gate`.
+- Do not mark ready or merge without explicit authorization.
 
-- CMake, compilers, builds, and tests: `docs/agents/build.md`
-- Branches, commits, pushes, and PRs: `docs/agents/git.md`
-- Learning, language design, sources, and topic state: `docs/agents/learning.md`
+## Boundaries
 
-If a focused context pack does not exist, inspect live files directly and state assumptions. Add a new context pack only after a domain has stable implementation facts or a repeated misread risk.
-
-## Language Implementation Boundaries
-
-- Do not infer implemented scanner, parser, AST, bytecode, VM, runtime, or GC behavior from planned directories or README text.
-- Preserve explicit module responsibilities and add new abstractions only for a concrete current need.
-- Pair language behavior changes with focused tests. Compilation alone is insufficient evidence.
-- Record external books, specifications, papers, or reference implementations with source, version, relevant section, and learning purpose.
-- Keep external designs as references unless Eyu explicitly adopts them.
-
-## Long-Running Work
-
-Use `docs/tasks/zh-CN/study-template.md` for topic state, next actions, evidence, failed explorations, and validation. Preserve concise recovery information rather than session transcripts. Distill only stable results into long-lived context.
-
-## Non-Negotiables
-
-- Never revert or overwrite user changes unless explicitly asked.
-- Never stage unrelated files or default to `git add .`.
-- Do not push failed validation unless the user explicitly asks to continue.
-- Do not claim roadmap features are implemented without live code and test evidence.
-- Use `SKILL.zh-CN.md` for Chinese skill sources; do not create `zh-CN/SKILL.md`, which may be discovered as a duplicate skill.
+- Do not infer scanner, parser, AST, bytecode, VM, runtime, or GC implementation from roadmap text.
+- Add abstractions only for concrete needs and prove language behavior with tests.
+- Record source, version, chapter, and purpose for external material.
+- Do not create task-state documents by default; use `docs/tasks/` only when explicitly requested.
+- Never overwrite, revert, stash, or clean user changes; never stage unrelated files or overstate validation.
+- Use `SKILL.zh-CN.md` for Chinese skill sources, never `zh-CN/SKILL.md`.

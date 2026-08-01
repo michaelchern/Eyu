@@ -1,0 +1,67 @@
+{
+  "cmake.useCMakePresets": "always",
+  "cmake.sourceDirectory": "${workspaceFolder}",
+  "cmake.configureOnOpen": true,
+  "cmake.configureOnEdit": true,
+  "cmake.automaticReconfigure": true,
+  "cmake.saveBeforeBuild": true,
+  "cmake.buildBeforeRun": true,
+  "cmake.buildTask": true,
+  "cmake.copyCompileCommands": "${workspaceFolder}/out/compile_commands.json",
+  "cmake.ctest.testExplorerIntegrationEnabled": true,
+  "cmake.options.statusBarVisibility": "compact",
+  "cmake.launchBehavior": "reuseTerminal",
+  "cmake.debugConfig": {
+    "cwd": "${workspaceFolder}",
+    "stopAtEntry": false,
+    "console": "integratedTerminal"
+  },
+  "C_Cpp.intelliSenseEngine": "disabled",
+  "C_Cpp.formatting": "disabled",
+  "clangd.enable": true,
+  "clangd.arguments": [
+    "--compile-commands-dir=out",
+    "--background-index",
+    "--completion-style=detailed",
+    "--header-insertion=never"
+  ],
+  "clangd.fallbackFlags": [
+    "-std=c++20"
+  ],
+  "files.associations": {
+    "*.h": "cpp",
+    "*.inc": "cpp"
+  },
+  "files.exclude": {
+    "build": true,
+    "out": true
+  },
+  "files.watcherExclude": {
+    "**/build/**": true,
+    "**/out/**": true
+  },
+  "search.exclude": {
+    "**/build/**": true,
+    "**/out/**": true
+  },
+  "[cpp]": {
+    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
+    "editor.detectIndentation": false,
+    "editor.formatOnSave": true,
+    "editor.insertSpaces": true,
+    "editor.rulers": [
+      100
+    ],
+    "editor.tabSize": 4
+  },
+  "[cmake]": {
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "[json][jsonc]": {
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  }
+}

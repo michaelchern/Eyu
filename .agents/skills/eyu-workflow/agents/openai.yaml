@@ -1,4 +1,5 @@
+# EYU_WORKFLOW_OPENAI_SKILL_MD_SHA256: f97849a5fec7e95efe2969963b34c6766ad8ed0d43b04f34e6b71023bfd5eadb
 interface:
   display_name: "Eyu Workflow"
-  short_description: "Guide AI work and project knowledge in Eyu"
-  default_prompt: "Use $eyu-workflow to handle this Eyu repository task safely and verify the result."
+  short_description: "Repository workflow for Eyu language development"
+  default_prompt: "Use $eyu-workflow to handle this Eyu repository task with the correct context, scope, and validation."
