@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.28)
 project(
   Eyu
   VERSION 0.1.0
+  HOMEPAGE_URL "https://github.com/michaelchern/Eyu"
   DESCRIPTION "A minimal, expressive scripting language"
   LANGUAGES CXX
 )

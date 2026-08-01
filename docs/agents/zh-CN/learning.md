@@ -6,7 +6,7 @@
 
 - 仓库级长期规则：`AGENTS.zh-CN.md`
 - 长期专项上下文：`docs/agents/zh-CN/*.md`
-- 某个主题的状态、证据、失败探索和验证：`docs/tasks/zh-CN/*.md`
+- 用户明确要求持久化时，主题状态、证据、失败探索和验证可放入 `docs/tasks/zh-CN/*.md`
 - 共享工作流、口令和意图识别：`.agents/skills/eyu-workflow/SKILL.zh-CN.md`
 
 ## 语言设计证据
@@ -20,7 +20,7 @@
 
 ## 长任务状态
 
-主题记录优先使用 `docs/tasks/zh-CN/study-template.md`，至少维护：
+只有用户明确要求仓库内任务文档时，才使用 `docs/tasks/zh-CN/study-template.md`，并至少维护：
 
 - Current facts
 - Top next action
@@ -29,7 +29,7 @@
 - Failed explorations
 - Validation
 
-只保存可恢复、可验证、对下一次工作有帮助的内容。不要提交原始聊天记录、临时命令流水或没有结论的脑暴。
+默认把活动状态留在当前对话。任务文档只保存可恢复、可验证、对下一次工作有帮助的内容；不要提交原始聊天记录、临时命令流水或没有结论的脑暴。
 
 ## 教学与实现风格
 

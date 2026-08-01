@@ -1,5 +1,5 @@
 # Eyu Learning Context
-<!-- AGENT_DOCS_LEARNING_ZH_CN_SHA256: 2c8ccaee1164c6ba0bc358a15831c7dfd473e924cf1b9c1858a41b98f5acb3ab -->
+<!-- AGENT_DOCS_LEARNING_ZH_CN_SHA256: 541495d4827f5e66562c07ab908aa21ff4921874eebbf0fa574f9cc27f9bcc57 -->
 
 Load this file only for learning plans, language design, source research, concept explanations, topic state, or durable knowledge tasks.
 
@@ -7,7 +7,7 @@ Load this file only for learning plans, language design, source research, concep
 
 - Repository-wide durable rules: `AGENTS.zh-CN.md`
 - Durable focused context: `docs/agents/zh-CN/*.md`
-- Topic state, evidence, failed explorations, and validation: `docs/tasks/zh-CN/*.md`
+- Topic state, evidence, failed explorations, and validation may use `docs/tasks/zh-CN/*.md` only when the user explicitly requests persistence.
 - Shared workflows, commands, and intent recognition: `.agents/skills/eyu-workflow/SKILL.zh-CN.md`
 
 ## Language-Design Evidence
@@ -21,7 +21,7 @@ Load this file only for learning plans, language design, source research, concep
 
 ## Long-Running Topic State
 
-Prefer `docs/tasks/zh-CN/study-template.md` and maintain at least:
+Use `docs/tasks/zh-CN/study-template.md` only when the user explicitly requests a repository task document. Maintain at least:
 
 - Current facts
 - Top next action
@@ -30,7 +30,7 @@ Prefer `docs/tasks/zh-CN/study-template.md` and maintain at least:
 - Failed explorations
 - Validation
 
-Preserve only recoverable, verifiable content that helps the next work session. Do not commit raw chat transcripts, temporary command streams, or unresolved brainstorming.
+Keep active state in the current conversation by default. Preserve only recoverable, verifiable content that helps the next work session. Do not commit raw chat transcripts, temporary command streams, or unresolved brainstorming.
 
 ## Teaching and Implementation Style
 

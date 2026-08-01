@@ -1,23 +1,12 @@
 # Eyu Agent Context Index
-<!-- AGENT_DOCS_INDEX_ZH_CN_SHA256: 90535adbc002e15c2206b683569bb987d1a6a66ef165a22238fbbb2fc9438d83 -->
+<!-- AGENT_DOCS_INDEX_ZH_CN_SHA256: d65aa1a99593704f9be4d09ad56065f4c485f8042161409dee5fae24e8616c23 -->
 
-Read root `AGENTS.md` first, then select the smallest useful context from this router.
+Read root `AGENTS.md`, then select the smallest required context.
 
-## Router
+- CMake, builds, and tests: `docs/agents/build.md`
+- Git, commits, and PRs: `docs/agents/git.md`
+- clang-format, comments, and format-only work: `docs/agents/formatting.md`
+- Symbols, call chains, and refactor impact: `docs/agents/codegraph.md`
+- Learning, language design, and sources: `docs/agents/learning.md`
 
-- CMake, compilers, builds, tests, or build failures: `docs/agents/build.md`
-- Branches, commits, pushes, PRs, or publication checks: `docs/agents/git.md`
-- Learning plans, language design, sources, topic state, or conversation distillation: `docs/agents/learning.md`
-
-## Default Flow
-
-1. Inspect `git status --short --branch`.
-2. Decide whether the task is build, Git, learning/design, or direct source implementation.
-3. Load only the matching context. If no focused pack exists, inspect live source directly.
-4. Report validation commands, results, and scope after changes.
-
-## Do Not
-
-- Do not treat the README roadmap as implemented behavior.
-- Do not assume a directory under `src/` is connected to the root build.
-- Do not turn temporary discussion or unsettled designs into durable rules.
+Inspect the worktree first and confirm facts from live code. Do not treat README roadmap text as implementation or create empty context packs for unstable modules.

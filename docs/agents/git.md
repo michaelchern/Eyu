@@ -1,58 +1,38 @@
 # Eyu Git Workflow Context
-<!-- AGENT_DOCS_GIT_ZH_CN_SHA256: b3783a6f811b0e06f7bbe5fcdfa75e7db09240c8ee640d6863c85dc49cc597b3 -->
+<!-- AGENT_DOCS_GIT_ZH_CN_SHA256: c8cd8fe24de2b2c6b1dc6ef0f43fb20492c8dcd828da003f0447d75a0e679f33 -->
 
-Load this file only for `=br`, `=gc`, `=cm`, `=gh`, branch, commit, push, PR, or publication-check tasks.
+Load only for `=br`, `=gc`, `=cm`, `=gh`, branches, commits, pushes, PRs, or publication checks.
 
-## Branch Naming
+## Delivery
 
-Use `<type>/<english-kebab-description>` without tool, user, or date prefixes. Allowed types:
+- Use PR-first delivery. `main` accepts Squash merge only and requires strict `quality-gate`.
+- One branch and PR handle one clear goal. Preserve existing branches, worktrees, and uncommitted work.
+- Do not push to `main`, mark ready, merge, or publish without explicit authorization.
+- Failed required validation cannot be committed normally or published. An explicitly requested `chore(wip): ...` checkpoint stays local.
 
-- `feat`: new language or tool behavior.
-- `fix`: incorrect behavior fixes.
-- `docs`: documentation, agent material, or learning records only.
-- `refactor`: structure changes without external behavior changes.
-- `perf`: performance or resource improvements.
-- `test`: tests and test data.
-- `build`: CMake, dependencies, presets, or toolchains.
-- `style`: formatting, comments, or text-style-only changes.
-- `chore`: other repository maintenance.
-- `spike`: temporary language experiments or technical validation.
+## Branches and Subjects
 
-Use only lowercase letters, digits, and single hyphens in the description. Keep the full name at most 63 characters and validate it with `git check-ref-format --branch`.
+Branches use `<type>/<english-kebab-description>` with no tool, user, or date prefix. Use lowercase letters, digits, and single hyphens, keep the name at most 63 characters, and validate it with Git. `spike/*` is local-only.
 
-## `=br <purpose>`
+Commit and PR subjects use:
 
-1. Inspect the current branch, `HEAD`, and worktree state.
-2. Check known local and remote refs without automatically fetching for naming.
-3. Derive and validate the branch name.
-4. Stop if the ref exists. Do not append a suffix or switch to an existing branch automatically.
-5. Create from current `HEAD` with `git switch -c` by default. Preserve uncommitted changes; do not stash, reset, clean, or revert.
-6. Create and switch only. Do not commit, push, or create a PR.
+```text
+<type>(<scope>)!: <Chinese description>
+```
 
-## `=gc`
+Scope and `!` are optional. Publishable types are `feat/fix/refactor/perf/docs/test/build/ci/style/chore/revert`. Descriptions must contain Chinese. `spike`, `wip:`, and `chore(wip):` are not publishable.
 
-- Do not modify files.
-- Inspect `git status --short --branch`, relevant diffs, and untracked files.
-- Run the sync check for agent files and the smallest relevant validation for source, CMake, or tests.
-- Report intended files, risks, and validation results.
+Normal local commit bodies are optional. A Chinese body is required for breaking changes, WIP checkpoints, or material compatibility/runtime/rollback risk. The PR Description is authoritative for scope, validation, omissions, risk, and rollback.
 
-## `=cm`
+## Gates and Commands
 
-- Inspect status, diffs, and validation results.
-- Stage only current-task files. Do not default to `git add .`.
-- Run `git diff --cached --check` and relevant validation after staging.
-- Use a concise title and a Chinese body explaining what changed, why, and what was verified.
-- Stop after the local commit. Do not push or create a PR.
+- Review the full diff and untracked files before staging; run `git diff --cached --check` afterward.
+- Before publication run `python3 ./tools/check_pr_policy.py --title "<PR title>" --base <base>`.
+- Run agent sync checks and the smallest relevant CMake, source, or test validation.
+- `quality-gate` checks policy, PR diff, Agent synchronization, and CMake preset parsing. It does not replace local builds or language behavior tests.
+- `=br` creates from current `HEAD` by default and preserves changes; it never commits.
+- `=gc` is read-only.
+- `=cm` stages only target files, validates, commits locally, and stops.
+- `=gh` requires a publishable non-default branch, applies `=cm`, checks policy, pushes, creates a draft PR, and waits for `quality-gate`.
 
-## `=gh`
-
-- Perform the `=gc` scope checks and relevant validation.
-- Commit uncommitted work under the `=cm` rules.
-- Push the current branch to `origin` and create a draft PR.
-- Report branch, commit, PR URL, and validation results.
-
-## Safety Rules
-
-- Preserve unrelated worktree changes and never stage unrelated files.
-- Do not push failed validation unless the user explicitly asks to continue.
-- `=cm` never pushes or creates a PR. `=gh` creates a draft PR by default.
+Never default to `git add .`, overwrite unrelated work, publish failed validation, publish `spike/*`, or mark ready/merge without separate user authorization.

@@ -1,69 +1,56 @@
 ---
 name: eyu-workflow
-description: Eyu C++20 脚本语言学习项目的仓库工作流。用于编辑 Eyu、处理 =sa/=ca/=ai/=br/=gc/=cm/=gh 口令、路由构建/Git/学习上下文、记录语言设计证据或验证项目改动。
+description: Eyu C++20 脚本语言学习仓库的通用工作流。Agent 编辑 Eyu、处理 =sa/=ca/=ai/=br/=gc/=cm/=gh，或需要路由 CMake、Git、formatting、codegraph 与学习上下文时使用。
 ---
 
 # Eyu Workflow
 
-使用本工作流让不同 AI Agent 的仓库操作保持范围清晰、证据充分并可恢复。
-
 ## 开始
 
-1. 读取根 `AGENTS.md`。
-2. 修改前查看 `git status --short --branch`。
-3. 只加载 `docs/agents/` 中与任务相关的文件。
-4. 以实时代码、CMake 和测试为权威；README 路线图不是实现证据。
-5. 保持改动符合用户请求，并汇报验证结果。
+1. 阅读根 `AGENTS.md`。
+2. 编辑前查看 `git status --short --branch`。
+3. 从实时源码、CMake 和测试确认事实。
+4. 只加载相关 `docs/agents/` 上下文。
+5. 保持改动范围并报告准确验证结果。
 
 ## 口令路由
 
-- `=sa`：根据中文源同步所有英文 Agent 文件。
-- `=ca`：检查所有英文 Agent 文件是否同步。
-- `=ai`：从近期对话中沉淀稳定的 Eyu 上下文。
-- `=br <用途>`：创建并切换到规范命名的本地分支。
-- `=gc`：检查发布准备度，不改变 Git 状态。
-- `=cm`：只提交当前意图明确的改动到本地分支。
-- `=gh`：提交当前改动并发布 draft PR。
+- `=sa`：从中文源同步英文 Agent 文件和 skill 元数据。
+- `=ca`：只运行同步检查。
+- `=ai`：沉淀稳定、有证据的 Eyu 上下文。
+- `=br <用途>`：创建规范命名的本地分支并保留未提交改动。
+- `=gc`：严格只读的发布预检。
+- `=cm`：只提交当前目标文件到本地分支。
+- `=gh`：提交、推送并创建 GitHub draft PR。
 
-`=sa` 和 `=ca` 使用 `python3 ./tools/sync_agents.py`；Windows 没有 `python3` 命令时使用 `py -3` 或指向 Python 3 的 `python`。脚本动态发现中文源配对，并检查规范化 SHA256 marker、缺失目标、孤立英文文件、重复 marker 和英文正文中的残留中文。
-
-处理 `=ai` 时：
-
-1. 检查工作区并保留用户已有改动。
-2. 写入前搜索内容所有者和旧结论。
-3. 只保存已经确定、可复用，并能减少未来误判、固定验证入口或记录明确项目决定的内容。
-4. 仓库规则写入 `AGENTS.zh-CN.md`；长期专项上下文写入 `docs/agents/zh-CN/*.md`；主题状态和证据写入 `docs/tasks/zh-CN/*.md`；共享工作流和口令写入 `SKILL.zh-CN.md`。
-5. 区分候选设计、已决定设计和已实现行为；已实现行为必须能指向实时代码和测试。
-6. 版本、目标清单和路径等可从实时文件发现的内容不复制第二份完整清单。
-7. 不保存临时猜测、未决定语法争议、一次性日志、原始聊天记录或秘密信息。
-8. 修改中文源后同步英文文件，并运行 `python3 ./tools/sync_agents.py --check`。
-
-处理 `=br`、`=gc`、`=cm` 和 `=gh` 时还要读取 `docs/agents/git.md`。
+`=sa` / `=ca` 使用 `python3 ./tools/sync-agents.py` 或 PowerShell 对应入口。`=br/=gc/=cm/=gh` 前读取 `docs/agents/git.md`。
 
 ## 上下文路由
 
-- CMake、编译器、构建和测试：`docs/agents/build.md`
-- 分支、提交、推送和 PR：`docs/agents/git.md`
-- 学习、语言设计、资料来源和主题状态：`docs/agents/learning.md`
+- CMake、构建、测试：`docs/agents/build.md`
+- Git 与 GitHub：`docs/agents/git.md`
+- clang-format 与注释：`docs/agents/formatting.md`
+- 符号和影响面：`docs/agents/codegraph.md`
+- 学习、语言设计、资料来源：`docs/agents/learning.md`
 
-缺少专项上下文时直接检查实时文件并说明假设。只有某个领域已经形成稳定实现事实或反复误判风险时，才新增上下文包。
+## Git 交付
+
+- 分支使用 `<type>/<english-kebab-description>`。
+- commit/PR 标题使用 `<type>(<scope>)!: <中文简述>`。
+- 普通 commit 正文可省略；breaking、WIP 或重大风险必须写正文。
+- 不默认 `git add .`，不发布 `chore(wip)`，不直推 `main`。
+- `=gh` 必须运行 policy checker、填写 PR 模板、创建 draft PR 并等待 `quality-gate`。
+- 未经用户明确授权，不转 ready 或合并。
 
 ## 语言实现边界
 
-- 不从规划目录或 README 推断扫描器、解析器、AST、字节码、VM、运行时或 GC 已经实现。
-- 保持模块职责明确，只为当前具体需求增加抽象。
-- 语言行为改动必须配套专项测试；只编译通过不能证明行为正确。
-- 引用外部书籍、规范、论文或参考实现时，记录来源、版本、相关章节和学习目的。
-- 外部设计默认只是参考，除非 Eyu 明确采纳。
-
-## 长任务
-
-使用 `docs/tasks/zh-CN/study-template.md` 保存主题状态、下一步、证据、失败探索和验证。只保留简洁的恢复信息，不提交会话流水；长期上下文只沉淀稳定结果。
+- 不从 README 或规划目录推断 scanner、parser、AST、bytecode、VM、runtime 或 GC 已实现。
+- 只为当前需求增加抽象；语言行为必须用测试证明。
+- 引用外部材料时记录来源、版本、章节和学习目的。
+- 默认不为单次任务创建状态文档；用户明确要求时才使用 `docs/tasks/`。
 
 ## 不可违反
 
-- 未经明确要求，不回滚或覆盖用户已有改动。
-- 不暂存无关文件，不默认使用 `git add .`。
-- 验证失败时不推送，除非用户明确要求继续。
-- 没有实时代码和测试证据时，不声称路线图功能已经实现。
-- 中文 skill 源使用 `SKILL.zh-CN.md`；不要创建可能被识别为重复 skill 的 `zh-CN/SKILL.md`。
+- 不覆盖、回滚、stash、clean 用户改动。
+- 不暂存无关文件，不扩大验证结论。
+- 中文 skill 源使用 `SKILL.zh-CN.md`，不要创建 `zh-CN/SKILL.md`。

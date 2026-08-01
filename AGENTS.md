@@ -1,60 +1,60 @@
 # Eyu Agent Entry
-<!-- AGENTS_ZH_CN_SHA256: 7abfaf3fc30fb201029bb6470574931afd1434470cd55caad8ce3871ffe263f3 -->
+<!-- AGENTS_ZH_CN_SHA256: e026b3630ca73531b1556bb767655112a9131df405e3dc287aacc3b5f409928b -->
 
-> `AGENTS.zh-CN.md` is the Chinese source for this root AI entry.
+> `AGENTS.zh-CN.md` is the Chinese source for this root entry.
 > Other Chinese sources live in `docs/agents/zh-CN/`, `docs/tasks/zh-CN/`, and `.agents/skills/*/SKILL.zh-CN.md`.
-> English files are the default AI entrypoints and must stay aligned with the Chinese sources.
 
 ## 1. Core Rules
 
-Eyu is a C++20 learning repository for implementing a scripting language from scratch. The live root CMake project currently builds only the `eyu` CLI from `app/main.cpp`, and tests only `--help` and `--version`. The scanner, parser, AST, bytecode, VM, runtime, and garbage collector remain roadmap items; planned directories or README text do not prove that they are implemented.
+Eyu is a C++20 learning repository for building a scripting language from scratch. The live root build currently contains only the `eyu` CLI from `app/main.cpp`, and tests cover only `--help` and `--version`. The scanner, parser, AST, bytecode, VM, runtime, and garbage collector remain roadmap items.
 
 When working in this repository:
 
-- Read this file first, then load only the relevant file from `docs/agents/`.
-- Check `git status --short --branch` before edits. Never revert or overwrite user changes.
-- Treat live source, `CMakeLists.txt`, `CMakePresets.json`, and tests as authoritative. The README roadmap expresses goals only.
-- Keep context narrow instead of loading build, Git, and learning state together by default.
-- Preserve clear scanner, parser, compiler, bytecode, VM, and runtime responsibilities. Do not add abstractions before a concrete need exists.
-- Pair language behavior changes with the smallest relevant tests. Compilation alone does not prove behavior.
-- State the source, version, and learning purpose when using books, papers, or other interpreter implementations.
-- Report validation commands, results, and the exact scope covered for every meaningful change.
+- Read this file first, then load only the required `docs/agents/*.md` context.
+- Run `git status --short --branch` before edits. Do not overwrite, revert, stash, or clean user work.
+- Treat live source, CMake, and tests as authoritative. README roadmap text expresses goals only.
+- Use PR-first delivery by default. Changes enter `main` from a non-default branch through Squash merge and must pass the lightweight `quality-gate`.
+- Do not push to `main`, mark a draft PR ready, or merge without explicit user authorization.
+- Pair language behavior changes with focused tests; compilation alone does not prove semantics.
+- State source, version, and learning purpose when using external material.
+- Report the exact validation commands, results, and covered scope for meaningful changes.
 
 ## 2. Context Router
 
-- Index and context selection: `docs/agents/index.md`
+- Index: `docs/agents/index.md`
 - CMake, compilers, builds, and tests: `docs/agents/build.md`
 - Branches, commits, pushes, and PRs: `docs/agents/git.md`
-- Learning plans, language-design evidence, and durable state: `docs/agents/learning.md`
+- clang-format, comments, and format-only work: `docs/agents/formatting.md`
+- Symbols, call chains, and refactor impact: `docs/agents/codegraph.md`
+- Learning plans, language-design evidence, and sources: `docs/agents/learning.md`
 
-Shared project skill:
-
-- `.agents/skills/eyu-workflow/SKILL.md`: repository workflow, project commands, and context routing.
-
-Add focused scanner, parser, bytecode, or runtime context only after the corresponding implementation becomes stable. Do not create empty context packs in advance.
+Shared workflow skill: `.agents/skills/eyu-workflow/SKILL.md`.
 
 ## 3. Key Paths
 
-- `CMakeLists.txt`: root build authority.
-- `CMakePresets.json`: shared configure, build, and test presets.
-- `app/main.cpp`: current CLI implementation entrypoint.
-- `src/`: planned language implementation modules; verify live CMake and source before claiming they are connected.
-- `tests/`: unit, integration, and language behavior tests.
-- `docs/agents/`: durable AI context loaded on demand.
-- `docs/tasks/`: committable topic state, evidence, failed explorations, and validation recipes.
-- `.agents/skills/`: shared project skills.
-- `tools/`: agent sync checks and lightweight project tools.
+- `CMakeLists.txt` and `CMakePresets.json`: live build and preset authority.
+- `app/main.cpp`: current CLI implementation.
+- `src/`: planned language modules; confirm live CMake integration.
+- `tests/`: test entrypoints.
+- `.clang-format`: C++ formatting authority.
+- `docs/agents/` and `.agents/skills/`: durable context and shared workflows.
+- `.github/workflows/pr-quality.yml`: lightweight title, diff, sync, and preset gate.
+- `tools/`: synchronization and PR policy tools.
 
 ## 4. Default Validation
 
-After changing agent documents or skills, run:
+After changing agent documents or skills:
 
 ```bash
-python3 ./tools/sync_agents.py --check
+python3 ./tools/sync-agents.py --check
 git diff --check
 ```
 
-On Windows, use `py -3` or a Python 3 `python` command if `python3` is unavailable.
+Windows PowerShell:
+
+```powershell
+.\tools\sync-agents.ps1 -Check
+```
 
 For C++, CMake, or test changes, run the smallest relevant validation. The default full entrypoint is:
 
@@ -64,54 +64,43 @@ cmake --build --preset debug
 ctest --preset debug
 ```
 
-Docs-only changes normally do not require a rebuild. When build commands are first recorded or changed, verify them directly.
-
 ## 5. Project Commands
-
-Commands use the `=` prefix to avoid conflicts with slash commands and mention syntax.
 
 ### `=sa`
 
-Synchronize every English agent file from its Chinese source. Do not modify Chinese sources. Keep English concise, update each SHA256 marker, and finish with `python3 ./tools/sync_agents.py --check`.
+Synchronize English agent files and skill metadata from Chinese sources. Generate the marker prompt first, edit only English targets, then run the sync check.
 
 ### `=ca`
 
-Run only `python3 ./tools/sync_agents.py --check`. Do not edit files. Report missing targets, stale markers, orphaned English files, or untranslated Chinese body text.
+Run only the platform-appropriate synchronization check. Do not modify files; tell the user to run `=sa` if it fails.
 
 ### `=ai`
 
-Distill stable, reusable Eyu context from recent conversations into project AI materials.
-
-- Inspect the worktree and search existing owners and older conclusions first.
-- Preserve only content that reduces future misreads, fixes a validation entrypoint, or records a settled design.
-- Put root rules in `AGENTS.zh-CN.md`, durable focused knowledge in `docs/agents/zh-CN/*.md`, topic state and evidence in `docs/tasks/zh-CN/*.md`, and shared workflows or commands in `SKILL.zh-CN.md`.
-- Treat facts discoverable from live code or configuration as live-file data instead of duplicating full inventories.
-- Do not promote undecided syntax ideas, temporary guesses, one-off logs, raw chat history, or secrets into durable rules.
-- Synchronize the matching English files and run the sync check after editing Chinese sources.
+Store stable, reusable, evidence-backed Eyu context in the correct Chinese owner: root rules in `AGENTS.zh-CN.md`, focused knowledge in `docs/agents/zh-CN/`, and shared workflow in `SKILL.zh-CN.md`. Do not create task-state documents by default; use `docs/tasks/` only when the user explicitly requests persistence. Do not preserve guesses, transcripts, secrets, or inventories discoverable from live files.
 
 ### `=br <purpose>`
 
-Create and switch to a local `<type>/<english-kebab-description>` branch. Inspect the current branch, worktree, and known refs first. Create from the current `HEAD` by default while preserving uncommitted changes. Stop if the name exists; do not append a suffix automatically. Do not commit or push.
+Follow `docs/agents/git.md` to create a `<type>/<english-kebab-description>` branch. Create from current `HEAD` by default, preserve uncommitted work, and stop if the ref exists. Create only; do not commit or push.
 
 ### `=gc`
 
-Check publication readiness only: inspect status, diffs, untracked files, and relevant validation. Do not stage, commit, push, or create a PR.
+Run a strictly read-only publication preflight covering status, complete diff, untracked files, validation, and risk. Do not stage, commit, push, or create a PR.
 
 ### `=cm`
 
-Commit only files clearly owned by the current task to the local branch. Do not default to `git add .`. Use a concise title and a Chinese body explaining what changed, why, and what was verified. Do not push or create a PR.
+Stage only current-task files and commit locally. Normal commit bodies are optional; breaking changes, `chore(wip)`, or material compatibility/runtime risk require a Chinese body. Do not push or create a PR.
 
 ### `=gh`
 
-Check and commit the intended files, push the current branch, and create a draft PR. Stop on failed validation unless the user explicitly asks to continue.
+Commit under `=cm`, run the PR policy checker, push the current non-default task branch, complete the template, create a draft PR, and wait for `quality-gate`. Do not mark ready or merge without separate authorization.
 
-## 6. Sync Rule
+## 6. Synchronization Rules
 
-Chinese files are human-maintained sources; English files are default AI entrypoints:
+Chinese files are human-maintained sources; English files are the default AI entrypoints:
 
 - `AGENTS.zh-CN.md` -> `AGENTS.md`
 - `docs/agents/zh-CN/*.md` -> `docs/agents/*.md`
 - `docs/tasks/zh-CN/*.md` -> `docs/tasks/*.md`
 - `.agents/skills/*/SKILL.zh-CN.md` -> `.agents/skills/*/SKILL.md`
 
-Every English file must contain a SHA256 marker matching its Chinese source normalized to UTF-8/LF. If the two languages conflict, the Chinese source wins. Do not create `.agents/skills/*/zh-CN/SKILL.md`, because it may be discovered as a duplicate skill.
+English targets need one current SHA256 marker and no untranslated Chinese body text. `agents/openai.yaml` must match the English `SKILL.md` hash, skill name, and interface fields. Chinese wins on conflict. Use `SKILL.zh-CN.md` for Chinese skill sources; never create `zh-CN/SKILL.md`.
